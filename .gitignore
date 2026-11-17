@@ -1,0 +1,29 @@
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# .NET build files
+**/bin/
+**/obj/
+
+# Angular / Node
+**/node_modules/
+**/dist/
+**/.angular/
+
+# Logs
+*.log
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+appsettings.*.local.json
+
+# OS files
+.DS_Store
+Thumbs.db
