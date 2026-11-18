@@ -39,4 +39,27 @@ export class StudentListComponent implements OnInit {
       }
     });
   }
+  deleteStudent(id: number): void {
+
+    if (confirm('Are you sure you want to delete this student?')) {
+
+      this.http.delete(`${this.apiUrl}/${id}`).subscribe({
+
+        next: () => {
+          this.students.update(students =>
+            students.filter(student => student.studentId !== id)
+          );
+
+          alert('Student deleted successfully!');
+        },
+
+        error: (error) => {
+          console.error('Delete Error:', error);
+          this.errorMessage = 'Unable to delete student.';
+        }
+
+      });
+
+    }
+  }
 }
