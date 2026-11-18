@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Student } from '../../models/student';
+import { AddStudentComponent } from '../add-student/add-student';
 
 @Component({
   selector: 'app-student-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, AddStudentComponent],
   templateUrl: './student-list.html',
   styleUrl: './student-list.css'
 })
@@ -32,7 +33,7 @@ export class StudentListComponent implements OnInit {
   };
 
   // Backend API URL
-  private apiUrl = 'https://localhost:7248/api/Students';
+  private apiUrl = 'http://localhost:5219/api/Students';
 
   constructor(private http: HttpClient) { }
 
