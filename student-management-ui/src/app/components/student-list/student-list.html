@@ -1,0 +1,45 @@
+
+
+<div class="container mt-4">
+
+  <h2 class="text-center mb-4">Student Records</h2>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div class="table-responsive">
+
+    <table class="table table-bordered table-striped table-hover">
+
+      <thead class="table-dark">
+        <tr>
+          <th>Student ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Department</th>
+          <th>Age</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let student of students()">
+          <td>{{ student.studentId }}</td>
+          <td>{{ student.name }}</td>
+          <td>{{ student.email }}</td>
+          <td>{{ student.department }}</td>
+          <td>{{ student.age }}</td>
+        </tr>
+
+        <tr *ngIf="students().length === 0 && !errorMessage">
+          <td colspan="5" class="text-center">
+            No students found.
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
