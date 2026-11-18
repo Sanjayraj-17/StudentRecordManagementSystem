@@ -3,10 +3,71 @@
 
   <h2 class="text-center mb-4">Student Records</h2>
 
+  <!-- Error Message -->
   <div *ngIf="errorMessage" class="alert alert-danger">
     {{ errorMessage }}
   </div>
 
+  <!-- Edit Student Form -->
+  <div *ngIf="selectedStudentId !== null"
+       class="card shadow-sm mb-4">
+
+    <div class="card-header bg-success text-white">
+      <h5 class="mb-0">Edit Student</h5>
+    </div>
+
+    <div class="card-body">
+
+      <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text"
+               class="form-control"
+               [(ngModel)]="editStudentData.name">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email"
+               class="form-control"
+               [(ngModel)]="editStudentData.email">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Department</label>
+        <select class="form-select"
+                [(ngModel)]="editStudentData.department">
+
+          <option value="CSE">CSE</option>
+          <option value="IT">IT</option>
+          <option value="ECE">ECE</option>
+          <option value="EEE">EEE</option>
+          <option value="MECH">MECH</option>
+          <option value="CIVIL">CIVIL</option>
+
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Age</label>
+        <input type="number"
+               class="form-control"
+               [(ngModel)]="editStudentData.age">
+      </div>
+
+      <button class="btn btn-success me-2"
+              (click)="updateStudent()">
+        Update Student
+      </button>
+
+      <button class="btn btn-secondary"
+              (click)="cancelEdit()">
+        Cancel
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Student Table -->
   <div class="table-responsive">
 
     <table class="table table-bordered table-striped table-hover">
@@ -25,6 +86,7 @@
       <tbody>
 
         <tr *ngFor="let student of students()">
+
           <td>{{ student.studentId }}</td>
           <td>{{ student.name }}</td>
           <td>{{ student.email }}</td>
@@ -32,11 +94,17 @@
           <td>{{ student.age }}</td>
 
           <td>
+            <button class="btn btn-warning btn-sm me-2"
+                    (click)="editStudent(student)">
+              Edit
+            </button>
+
             <button class="btn btn-danger btn-sm"
                     (click)="deleteStudent(student.studentId!)">
               Delete
             </button>
           </td>
+
         </tr>
 
         <tr *ngIf="students().length === 0 && !errorMessage">
