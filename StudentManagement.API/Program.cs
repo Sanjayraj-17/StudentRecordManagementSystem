@@ -19,7 +19,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 
 // 2. ASP.NET Core Identity Configuration
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    options.Password.RequireUppercase = false;
+})
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
@@ -80,14 +83,36 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-
-// Seed Admin and User roles
+// Seed Roles and First Admin Account
 using (var scope = app.Services.CreateScope())
 {
-    var roleManager = scope.ServiceProvider
-        .GetRequiredService<RoleManager<IdentityRole>>();
+    var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILoggerFactory>().CreateLogger("AdminSeeder");
 
-    await RoleSeeder.SeedRolesAsync(roleManager);
+    try
+    {
+        var roleManager = services
+            .GetRequiredService<RoleManager<IdentityRole>>();
+
+        var userManager = services
+            .GetRequiredService<UserManager<ApplicationUser>>();
+
+        // Create Admin and User roles
+        await RoleSeeder.SeedRolesAsync(roleManager);
+
+        // Create the first Admin account
+        await AdminSeeder.SeedAdminAsync(
+            userManager,
+            roleManager,
+            app.Configuration,
+            logger
+        );
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "An error occurred while seeding Identity data.");
+        throw;
+    }
 }
 
 
